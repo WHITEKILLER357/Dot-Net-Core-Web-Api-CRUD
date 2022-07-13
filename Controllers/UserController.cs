@@ -25,7 +25,7 @@ namespace RESTfullAPI.Controllers
         {
             var id = await _userRepository.AdduserAsync(requestUser);
 
-            return Ok(new { message = "User Create Success fully"});
+            return Ok(new { message = "User Create Success fully" });
         }
 
         [HttpGet("Get All Users")]
@@ -36,5 +36,30 @@ namespace RESTfullAPI.Controllers
             return Ok(results);
         }
 
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var results = await _userRepository.GeyUserById(id);
+
+            return Ok(results);
+        }
+
+
+        [HttpPost("UpdateUser")]
+        public async Task<IActionResult> UpdateuserAsync(int id, RequestUserModel requestUser)
+        {
+            var result = await _userRepository.UpdateUser(id, requestUser);
+
+            return Ok(result);
+        }
+
+
+        [HttpDelete("{id}/Deleteuser")]
+        
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            await _userRepository.DeleteUser(id);
+            return Ok(new { message ="Record Deleted success fully..."});
+        }
     }
 }

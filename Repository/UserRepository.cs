@@ -57,5 +57,60 @@ namespace RESTfullAPI.Repository
 
         }
 
+        public async Task<RequestUserModel> GeyUserById(int id)
+        {
+            var recods = await _userDbContext.users.FindAsync(id);
+
+            return new RequestUserModel() { 
+            user_id = recods.user_id,
+            name = recods.name,
+            email = recods.email,
+            phone =recods.phone,
+            Gender = recods.Gender,
+            address = recods.address
+            };
+
+            
+        }
+
+
+        public async Task<RequestUserModel> UpdateUser(int id,RequestUserModel requestUser)
+        {
+            var records = await _userDbContext.users.FindAsync(id);
+            if (records != null)
+            {
+                records.name = requestUser.name;
+                records.email = requestUser.email;
+                records.phone = requestUser.phone;
+                records.Gender = requestUser.Gender;
+                records.address = requestUser.address;
+
+                await _userDbContext.SaveChangesAsync();
+
+                              
+            }
+            var responseData = new RequestUserModel()
+            {
+                user_id = records.user_id,
+                name = records.name,
+                email = records.email,
+                phone = records.phone,
+                Gender = records.Gender,
+                address = records.address
+            };
+
+            return responseData;
+        }
+              
+
+        public async Task DeleteUser(int id)
+        {
+            var record = new UserModel() { user_id = id};
+            
+                _userDbContext.users.Remove(record);
+                await _userDbContext.SaveChangesAsync();
+            
+        }
+
     }
 }
